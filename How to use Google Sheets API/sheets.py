@@ -8,14 +8,19 @@ class GoogleSheet():
         creds = ServiceAccountCredentials.from_json_keyfile_name('token.json', scope)
         client = gspread.authorize(creds)
         
+        # The name of your Spreadsheet
         sheet = client.open('Test Spreadsheet')
+        
+        # The name of your sheets
         self.contacts = sheet.worksheet('Contacts')
         self.contacts2 = sheet.worksheet('Contacts2')
         
     def getRowLength(self):
+        # gets the length of all values within a column 
         return len(self.contacts.get_all_values())
     
     def sendData(self, first, last, email, phone):
+        # sends the data to the spreadsheet
         contacts = []
         contacts2 = []
         
@@ -31,5 +36,6 @@ class GoogleSheet():
         contacts2.append(last)
         contacts2.append(phone)
         
+        # inserts the data (py arrays -> spreadsheet rows)
         self.contacts.insert_row(contacts, id_num+1)
         self.contacts2.insert_row(contacts2, id_num+1)
